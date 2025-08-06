@@ -1,0 +1,11 @@
+version: "1"
+rules:
+  - base: auto-merge
+    upstream: MoeNetwork:Tieba-Cloud-Sign  
+    mergeMethod: merge
+    conflictReviewers: 
+      - MixAnKun
+  - base: master
+    upstream: MoeNetwork:Tieba-Cloud-Sign
+    mergeMethod: hardreset
+    mergeUnstable: true

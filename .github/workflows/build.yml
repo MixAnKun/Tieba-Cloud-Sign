@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
   # 只保留手动构建
   # 如果不想这个年更项目一更新就原地去世，请保持注释
-  # push:
-  #   branches:
-  #     - master
+  push:
+    branches:
+      - auto-merge
 
 concurrency:
   group: build-${{ github.ref }}
@@ -42,8 +42,9 @@ jobs:
         name: Login DockerHub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          registry: ${{ secrets.PUSH_REGISTRY }}
+          username: ${{ secrets.PUSH_USERNAME }}
+          password: ${{ secrets.PUSH_PASSWORD }}
 
       - 
         name: Set Up Cache
@@ -61,4 +62,4 @@ jobs:
           file: docker/Dockerfile
           platforms: linux/amd64,linux/arm64,linux/arm,linux/s390x
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:latest,${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.version }}
+          tags: ${{ secrets.PUSH_REGISTRY }}/${{ secrets.PUSH_USERNAME }}/${{ secrets.PUSH_NAME }}:${{ secrets.PUSH_TAG }}
